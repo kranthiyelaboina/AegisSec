@@ -168,7 +168,7 @@ class SecureConfig:
         self.console.print("4. Copy the key (starts with 'sk-or-v1-')")
         
         while True:
-            api_key = Prompt.ask("\n[green]Enter your OpenRouter API key[/green]", password=True)
+            api_key = Prompt.ask("\n[green]Enter your OpenRouter API key[/green]")
             
             if not api_key:
                 if not Confirm.ask("No API key entered. Continue without API (offline mode)?"):
