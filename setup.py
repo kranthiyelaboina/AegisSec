@@ -85,9 +85,9 @@ def setup_config():
     # Ask about model preference
     console.print("\n[cyan]AI Model Selection[/cyan]")
     models = [
-        "deepseek/deepseek-chat",
-        "deepseek/deepseek-coder",
-        "openai/gpt-4-turbo-preview"
+        "deepseek/deepseek-chat-v3.1:free",
+        "microsoft/phi-3-mini-128k-instruct:free",
+        "google/gemma-7b-it:free"
     ]
     
     console.print("Available models:")

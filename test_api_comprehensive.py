@@ -21,7 +21,7 @@ def test_api_comprehensive():
     try:
         from openai import OpenAI
         
-        api_key = "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"
+        api_key = "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"
         console.print(f"API Key: {api_key[:20]}...{api_key[-10:]}")
         
         client = OpenAI(
@@ -29,11 +29,11 @@ def test_api_comprehensive():
             api_key=api_key
         )
         
-        # Try different models
+        # Try different models - prioritize free versions
         models_to_test = [
             "deepseek/deepseek-chat-v3.1:free",
-            "deepseek/deepseek-chat", 
-            "openai/gpt-3.5-turbo"
+            "microsoft/phi-3-mini-128k-instruct:free",
+            "google/gemma-7b-it:free"
         ]
         
         for model in models_to_test:
@@ -109,7 +109,7 @@ def test_alternative_models():
     console = Console()
     console.print("\n[yellow]Testing Alternative Free Models[/yellow]")
     
-    api_key = "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"
+    api_key = "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"
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=api_key
