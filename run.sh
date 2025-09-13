@@ -89,7 +89,7 @@ else
 fi
 
 # Set environment variable for the API key (optional)
-export OPENROUTER_API_KEY="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"
+export OPENROUTER_API_KEY="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"
 
 echo ""
 echo "🚀 Starting AegisSec AI-Powered Penetration Testing..."
