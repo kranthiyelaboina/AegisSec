@@ -1,0 +1,61 @@
+{
+  "openrouter": {
+    "api_key": "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",
+    "base_url": "https://openrouter.ai/api/v1",
+    "model": "deepseek/deepseek-chat-v3.1:free"
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  },
+  "tools": {
+    "kali_tools": [
+      "nmap",
+      "nikto",
+      "hydra",
+      "sqlmap",
+      "dirb",
+      "gobuster",
+      "wpscan",
+      "metasploit",
+      "burpsuite",
+      "wireshark",
+      "john",
+      "hashcat",
+      "aircrack-ng",
+      "recon-ng",
+      "maltego"
+    ]
+  },
+  "profiles": {
+    "quick_scan": {
+      "name": "Quick Network Scan",
+      "description": "Fast network discovery and basic vulnerability assessment",
+      "default_tools": [
+        "nmap",
+        "nikto"
+      ]
+    },
+    "full_audit": {
+      "name": "Comprehensive Security Audit",
+      "description": "Complete penetration testing with all relevant tools",
+      "default_tools": [
+        "nmap",
+        "nikto",
+        "dirb",
+        "sqlmap",
+        "hydra"
+      ]
+    },
+    "web_app": {
+      "name": "Web Application Testing",
+      "description": "Focused on web application security assessment",
+      "default_tools": [
+        "nikto",
+        "dirb",
+        "sqlmap",
+        "wpscan"
+      ]
+    }
+  }
+}
