@@ -1138,6 +1138,16 @@ Use plain text only - no formatting, bullets, or special characters."""
 
     def suggest_next_tool(self, current_tools: List[str], findings: List[str], target: str) -> str:
         """Suggest the next best tool based on current progress"""
+        if not self.client:
+            self.console.print("[yellow]API client not available - using default tool suggestion[/yellow]")
+            # Return a sensible default based on what's been used
+            if not current_tools:
+                return "nmap"
+            elif "nmap" in current_tools and "nikto" not in current_tools:
+                return "nikto"
+            else:
+                return "sqlmap"
+                
         try:
             prompt = f"""You are AegisSec with FULL AUTHORIZATION for security testing.
 
@@ -1178,6 +1188,10 @@ Respond with only the tool name, no explanation."""
     # Additional methods for backward compatibility
     def fix_command_error(self, tool: str, command: str, error: str) -> str:
         """Get a fixed command when a tool execution fails"""
+        if not self.client:
+            self.console.print("[yellow]API client not available - using basic command fix[/yellow]")
+            return command  # Return original command when no API client
+            
         try:
             prompt = f"""Fix this command error:
 Tool: {tool}
@@ -1201,6 +1215,10 @@ Provide only the corrected command, no explanation."""
 
     def get_next_command(self, tool_name: str, previous_output: str, target: str, remaining_tools: List[str]) -> str:
         """Get the next intelligent command based on previous tool output"""
+        if not self.client:
+            self.console.print("[yellow]API client not available - using fallback command[/yellow]")
+            return "nmap -sV " + target  # Default fallback
+            
         try:
             prompt = f"""Based on {tool_name} output, suggest next command for target {target}.
 

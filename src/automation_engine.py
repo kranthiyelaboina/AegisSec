@@ -48,6 +48,7 @@ class AutomationEngine:
     def run_tools(self, tools: List[Dict[str, str]], criteria: str) -> Dict[str, Any]:
         """Run a list of tools and collect results"""
         session_id = self._generate_session_id()
+        target = self._extract_target_from_criteria(criteria)
         session_data = {
             "session_id": session_id,
             "timestamp": datetime.now().isoformat(),
@@ -90,7 +91,7 @@ class AutomationEngine:
             
             # Analyze the output with AI
             if result.get("success") and result.get("output"):
-                analysis = self.deepseek.analyze_tool_output(tool_name, result["output"])
+                analysis = self.deepseek.analyze_tool_output(tool_name, result["output"], target)
                 if analysis:
                     session_data["results"][tool_name]["analysis"] = analysis
                 
@@ -577,9 +578,10 @@ class AutomationEngine:
     def _process_tool_output(self, tool_name: str, result: Dict, session_data: Dict, remaining_tools: List[Dict]):
         """Process tool output with AI analysis and planning"""
         output = result.get("output", "")
+        target = self._extract_target_from_criteria(session_data["criteria"])
         
         # AI analysis
-        analysis = self.deepseek.analyze_tool_output(tool_name, output)
+        analysis = self.deepseek.analyze_tool_output(tool_name, output, target)
         if analysis:
             result["analysis"] = analysis
             
@@ -594,7 +596,6 @@ class AutomationEngine:
         # Plan next steps if there are remaining tools
         if remaining_tools:
             remaining_tool_names = [t.get('name', '') for t in remaining_tools]
-            target = self._extract_target_from_criteria(session_data["criteria"])
             
             next_suggestion = self.deepseek.get_next_command(
                 tool_name, output, target, remaining_tool_names
@@ -967,7 +968,7 @@ class AutomationEngine:
             
             # Analyze the output with AI
             if result.get("success") and result.get("output"):
-                analysis = self.deepseek.analyze_tool_output(tool_name, result["output"])
+                analysis = self.deepseek.analyze_tool_output(tool_name, result["output"], target)
                 if analysis:
                     session_data["results"][tool_name]["analysis"] = analysis
                     self.logger.info(f"AI analysis completed for {tool_name}")

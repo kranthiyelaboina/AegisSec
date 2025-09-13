@@ -201,3 +201,11 @@
 2025-09-13 23:38:10,165 - httpx - INFO - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
 2025-09-14 00:41:10,535 - httpx - INFO - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
 2025-09-14 02:36:35,582 - httpx - INFO - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-14 03:10:10,358 - automation_engine - INFO - Starting automation session: autopentest_20250914_031010
+2025-09-14 03:10:10,358 - automation_engine - INFO - Running tool: nmap
+2025-09-14 03:10:10,380 - automation_engine - WARNING - Attempt 1 failed for nmap
+2025-09-14 03:10:10,383 - automation_engine - INFO - AI suggested fix: nmap -sS -O 127.0.0.1
+2025-09-14 03:10:10,404 - automation_engine - WARNING - Attempt 2 failed for nmap
+2025-09-14 03:10:10,405 - automation_engine - INFO - AI suggested fix: nmap -sS -O 127.0.0.1
+2025-09-14 03:10:10,428 - automation_engine - WARNING - Attempt 3 failed for nmap
+2025-09-14 03:10:10,432 - automation_engine - INFO - Session data saved: logs\autopentest_20250914_031010.json
