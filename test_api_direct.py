@@ -3,16 +3,28 @@
 Test OpenRouter API Key Directly
 """
 
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
+
 from openai import OpenAI
+from secure_config import SecureConfig
 
 def test_api_key():
     """Test the OpenRouter API key directly"""
     print("Testing OpenRouter API key...")
     
+    secure_config = SecureConfig()
+    api_key = secure_config.get_api_key()
+    
+    if not api_key:
+        print("❌ No API key configured. Please run setup first.")
+        return False
+    
     try:
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key="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"
+            api_key=api_key
         )
         
         completion = client.chat.completions.create(

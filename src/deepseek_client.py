@@ -9,21 +9,30 @@ import os
 from typing import List, Dict, Any
 from openai import OpenAI
 from rich.console import Console
+from secure_config import SecureConfig
 
 class DeepSeekClient:
     def __init__(self, config_manager=None):
         self.console = Console()
         self.config_manager = config_manager
+        self.secure_config = SecureConfig()
         
         # Initialize OpenAI client with OpenRouter configuration
         try:
-            # PERMANENT API KEY - This should always work
-            api_key = "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"
+            # Get API key from secure storage
+            api_key = self.secure_config.get_api_key()
             base_url = "https://openrouter.ai/api/v1"
             model = "deepseek/deepseek-chat-v3.1:free"
             
+            if not api_key:
+                self.console.print("[red]❌ No API key configured[/red]")
+                self.console.print("[yellow]Please run the setup to configure your OpenRouter API key[/yellow]")
+                self.console.print("[dim]Use: python main.py --setup[/dim]")
+                raise ValueError("No API key configured")
+            
             # Validate API key format
-            if not api_key or not api_key.startswith("sk-or-v1-"):
+            if not api_key.startswith("sk-or-v1-"):
+                self.console.print("[red]❌ Invalid API key format[/red]")
                 raise ValueError("Invalid API key format")
             
             # Initialize OpenAI client with OpenRouter settings
@@ -33,11 +42,11 @@ class DeepSeekClient:
             )
             self.model = model
             
-            # Store credentials for debugging
-            self.api_key = api_key
+            # Store credentials for debugging (without exposing the full key)
+            self.api_key_preview = f"{api_key[:15]}...{api_key[-8:]}" if api_key else "None"
             self.base_url = base_url
             
-            self.console.print(f"[dim]Using API key: {api_key[:20]}...{api_key[-10:]}[/dim]")
+            self.console.print(f"[dim]Using API key: {self.api_key_preview}[/dim]")
             self.console.print(f"[dim]Using model: {model}[/dim]")
             
             # Test the connection with detailed error handling
@@ -55,7 +64,7 @@ class DeepSeekClient:
             # Create fallback state
             self.client = None
             self.model = "deepseek/deepseek-chat-v3.1:free"
-            self.api_key = None
+            self.api_key_preview = "None"
             self.base_url = "https://openrouter.ai/api/v1"
         
         # Kali Linux pre-installed tools (top 3 priority)
@@ -124,7 +133,7 @@ class DeepSeekClient:
             # Check for specific error types
             if "401" in error_msg:
                 self.console.print("[yellow]⚠️  API Key authentication failed[/yellow]")
-                self.console.print(f"[dim]Using key: {getattr(self, 'api_key', 'None')[:20] if getattr(self, 'api_key', None) else 'None'}...[/dim]")
+                self.console.print(f"[dim]Using key: {getattr(self, 'api_key_preview', 'None')}[/dim]")
             elif "403" in error_msg:
                 self.console.print("[yellow]⚠️  API access forbidden[/yellow]")
             elif "429" in error_msg:

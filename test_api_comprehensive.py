@@ -20,9 +20,16 @@ def test_api_comprehensive():
     console.print("\n[yellow]Test 1: Direct OpenAI Client[/yellow]")
     try:
         from openai import OpenAI
+        from secure_config import SecureConfig
         
-        api_key = "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"
-        console.print(f"API Key: {api_key[:20]}...{api_key[-10:]}")
+        secure_config = SecureConfig()
+        api_key = secure_config.get_api_key()
+        
+        if not api_key:
+            console.print("[red]❌ No API key configured. Please run setup first.[/red]")
+            return False
+        
+        console.print(f"API Key: {api_key[:15]}...{api_key[-8:]}")
         
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
@@ -109,7 +116,14 @@ def test_alternative_models():
     console = Console()
     console.print("\n[yellow]Testing Alternative Free Models[/yellow]")
     
-    api_key = "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"
+    from secure_config import SecureConfig
+    secure_config = SecureConfig()
+    api_key = secure_config.get_api_key()
+    
+    if not api_key:
+        console.print("[red]❌ No API key configured. Please run setup first.[/red]")
+        return
+    
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=api_key
