@@ -209,3 +209,8 @@
 2025-09-14 03:10:10,405 - automation_engine - INFO - AI suggested fix: nmap -sS -O 127.0.0.1
 2025-09-14 03:10:10,428 - automation_engine - WARNING - Attempt 3 failed for nmap
 2025-09-14 03:10:10,432 - automation_engine - INFO - Session data saved: logs\autopentest_20250914_031010.json
+2025-09-14 03:37:16,450 - httpx - INFO - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-09-14 03:37:16,451 - openai._base_client - INFO - Retrying request to /chat/completions in 0.478255 seconds
+2025-09-14 03:37:17,537 - httpx - INFO - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-09-14 03:37:17,539 - openai._base_client - INFO - Retrying request to /chat/completions in 0.964801 seconds
+2025-09-14 03:37:19,954 - httpx - INFO - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
