@@ -75,7 +75,7 @@ def setup_config():
     console.print("\n[cyan]OpenRouter API Configuration[/cyan]")
     console.print("Get your API key from: https://openrouter.ai/keys")
     
-    api_key = Prompt.ask("Enter your OpenRouter API key", password=True)
+    api_key = Prompt.ask("Enter your OpenRouter API key (visible input)")
     if api_key:
         config["openrouter"]["api_key"] = api_key
     else:

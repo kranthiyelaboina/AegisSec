@@ -52,11 +52,19 @@ class ConfigManager:
                 logging.error(f"Missing required config section: {section}")
                 return False
         
-        # Check API key
-        api_key = self.config.get("openrouter", {}).get("api_key")
-        if not api_key or api_key == "your_openrouter_api_key_here":
-            logging.error("OpenRouter API key not configured")
-            return False
+        # Check API key using secure config instead of config file
+        try:
+            from secure_config import SecureConfig
+            secure_config = SecureConfig()
+            if not secure_config.is_api_key_configured():
+                logging.error("OpenRouter API key not configured")
+                return False
+        except ImportError:
+            # Fallback to config file check
+            api_key = self.config.get("openrouter", {}).get("api_key")
+            if not api_key or api_key == "your_openrouter_api_key_here":
+                logging.error("OpenRouter API key not configured")
+                return False
         
         return True
     

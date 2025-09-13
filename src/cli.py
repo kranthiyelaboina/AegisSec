@@ -666,37 +666,31 @@ class AegisSecCLI:
                 self.console.print("[red]Sorry, I couldn't process that question.[/red]")
     
     def show_settings(self):
-        """Show current settings and allow API testing"""
-        self.console.print("\n[bold yellow]⚙️  Settings[/bold yellow]")
-        
-        settings_table = Table(show_header=True, header_style="bold magenta")
-        settings_table.add_column("Setting", style="cyan")
-        settings_table.add_column("Value", style="white")
-        
-        settings_table.add_row("API Model", self.deepseek.model)
-        settings_table.add_row("API Base URL", "https://openrouter.ai/api/v1")
-        settings_table.add_row("Log Level", self.config.get("logging.level", "INFO"))
-        settings_table.add_row("Config Path", self.config.config_path)
-        
-        self.console.print(settings_table)
-        
-        # Test API connection option
-        if Confirm.ask("\nTest API connection?"):
-            self.console.print("\n[cyan]Testing DeepSeek API connection...[/cyan]")
+        """Show settings menu using the standalone settings manager"""
+        try:
+            from settings_manager import SettingsManager
+            settings_manager = SettingsManager()
+            settings_manager.show_settings_menu()
+        except ImportError:
+            # Fallback to simple settings display
+            self.console.print("\n[bold yellow]⚙️  Settings[/bold yellow]")
             
-            with Progress(
-                SpinnerColumn(),
-                TextColumn("[progress.description]{task.description}"),
-                console=self.console
-            ) as progress:
-                task = progress.add_task("Connecting to API...", total=None)
-                success = self.deepseek.test_api_connection()
-                progress.remove_task(task)
+            settings_table = Table(show_header=True, header_style="bold magenta")
+            settings_table.add_column("Setting", style="cyan")
+            settings_table.add_column("Value", style="white")
             
-            if success:
-                self.console.print("[green]✅ API connection successful![/green]")
-            else:
-                self.console.print("[red]❌ API connection failed. Check your API key and internet connection.[/red]")
+            settings_table.add_row("API Model", self.deepseek.model)
+            settings_table.add_row("API Base URL", "https://openrouter.ai/api/v1")
+            settings_table.add_row("Log Level", self.config.get("logging.level", "INFO"))
+            settings_table.add_row("Config Path", self.config.config_path)
+            
+            self.console.print(settings_table)
+            
+            self.console.print("\n[yellow]For full settings management, run:[/yellow]")
+            self.console.print("[cyan]python configure_settings.py[/cyan]")
+            
+            Prompt.ask("\nPress Enter to continue...")
+    
     
     def _show_consultation_summary(self, enhanced_criteria: Dict):
         """Show consultation summary before starting automation"""

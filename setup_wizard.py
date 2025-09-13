@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from rich.console import Console
 from rich.prompt import Confirm
-from hardcoded_config import HardcodedConfig
+from secure_config import SecureConfig
 
 def main():
     """Main setup wizard"""
@@ -37,8 +37,8 @@ Your API key will be encrypted and stored locally on your machine.
         console.print("[yellow]Setup cancelled. You can run this again anytime with: python setup.py[/yellow]")
         return
     
-    # Initialize hardcoded config
-    secure_config = HardcodedConfig()
+    # Initialize secure config
+    secure_config = SecureConfig()
     
     # Check if already configured
     if secure_config.is_api_key_configured():
@@ -70,10 +70,12 @@ if __name__ == "__main__":
     
     if args.reset:
         console = Console()
-        secure_config = HardcodedConfig()
+        secure_config = SecureConfig()
         if Confirm.ask("Are you sure you want to reset all configuration?"):
-            console.print("[yellow]Using hardcoded configuration - cannot reset[/yellow]")
-            console.print("[green]Hardcoded API key is always available[/green]")
+            if secure_config.remove_api_key():
+                console.print("[green]Configuration reset successfully.[/green]")
+            else:
+                console.print("[red]Error resetting configuration.[/red]")
         sys.exit(0)
     
     main()
