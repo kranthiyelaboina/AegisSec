@@ -21,7 +21,7 @@ def test_api_comprehensive():
     try:
         from openai import OpenAI
         
-        api_key = "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"
+        api_key = "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"
         console.print(f"API Key: {api_key[:20]}...{api_key[-10:]}")
         
         client = OpenAI(
@@ -109,7 +109,7 @@ def test_alternative_models():
     console = Console()
     console.print("\n[yellow]Testing Alternative Free Models[/yellow]")
     
-    api_key = "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"
+    api_key = "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"
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=api_key
