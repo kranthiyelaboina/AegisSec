@@ -9,17 +9,17 @@ import os
 from typing import List, Dict, Any
 from openai import OpenAI
 from rich.console import Console
-from secure_config import SecureConfig
+from hardcoded_config import HardcodedConfig
 
 class DeepSeekClient:
     def __init__(self, config_manager=None):
         self.console = Console()
         self.config_manager = config_manager
-        self.secure_config = SecureConfig()
+        self.secure_config = HardcodedConfig()
         
         # Initialize OpenAI client with OpenRouter configuration
         try:
-            # Get API key from secure storage
+            # Get API key from hardcoded storage
             api_key = self.secure_config.get_api_key()
             base_url = "https://openrouter.ai/api/v1"
             model = "deepseek/deepseek-chat-v3.1:free"
@@ -46,7 +46,7 @@ class DeepSeekClient:
             self.api_key_preview = f"{api_key[:15]}...{api_key[-8:]}" if api_key else "None"
             self.base_url = base_url
             
-            self.console.print(f"[dim]Using API key: {self.api_key_preview}[/dim]")
+            self.console.print(f"[dim]Using hardcoded API key: {self.api_key_preview}[/dim]")
             self.console.print(f"[dim]Using model: {model}[/dim]")
             
             # Test the connection with detailed error handling

@@ -18,7 +18,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 from cli import AegisSecCLI
 from config_manager import ConfigManager
-from secure_config import SecureConfig
+from hardcoded_config import HardcodedConfig
 
 console = Console()
 app = typer.Typer(rich_markup_mode="rich")
@@ -59,8 +59,8 @@ def main():
     try:
         display_banner()
         
-        # Check if API key is configured
-        secure_config = SecureConfig()
+        # Check if API key is configured - Using hardcoded config
+        secure_config = HardcodedConfig()
         if not secure_config.is_api_key_configured():
             console.print("\n[red]⚠️ No API key configured![/red]")
             console.print("[yellow]To use AI features, you need to configure your OpenRouter API key.[/yellow]")
@@ -77,6 +77,8 @@ def main():
             else:
                 console.print("[yellow]Continuing in offline mode with limited functionality.[/yellow]")
                 console.print("[dim]You can run setup later with: python setup_wizard.py[/dim]")
+        else:
+            console.print("[green]✅ API key is configured and ready![/green]")
         
         # Continue with normal startup
         
